@@ -38,6 +38,9 @@ with checklist.open() as cl:
         elif line[0] == '*':
             # desc.text = "".join(['*', line[2:].rstrip()])
             pass
+        elif line[0:2] == '-|':
+            # This is a SQL statement, put it in the "prerequisites" section
+            preconds.text = "".join(["`", line[2:].replace('^nl', '\n').rstrip(), "`"])
         else:
             case = ET.SubElement(cases, "case")
             ET.SubElement(case, "id")
@@ -51,6 +54,7 @@ with checklist.open() as cl:
             ET.SubElement(case, "milestone")
             ET.SubElement(case, "references")
             custom = ET.SubElement(case, "custom")
+            preconds = ET.SubElement(custom, "preconds")
             steps_separated = ET.SubElement(custom, "steps_separated")
             step_index = 1  # reset step index when creating a new test case
 
