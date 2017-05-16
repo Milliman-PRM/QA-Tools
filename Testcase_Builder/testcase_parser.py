@@ -2,12 +2,12 @@
 ### CODE OWNERS: Steve Gredell
 ### OBJECTIVE: Parse checklists into TestRail test cases
 ### DEVELOPER NOTES:
-  I'm lazy so you'll have to copy/paste the input and output files at the top of the script
+  First argument should be the path to the checklist source text file, the second should be
+  the path to the XML output file to be imported to TestRail0.
 """
+import sys
 import xml.etree.cElementTree as ET
 from pathlib import Path
-checklist = Path(r"C:\Users\steve.gredell\repos\analytics-pipeline\800_QlikView_QVWs\_Checklists\PRCA_Report_Checklist.txt")
-xml_out = Path(r"C:\Users\steve.gredell\repos\analytics-pipeline\800_QlikView_QVWs\_Checklists\PRCA_Report_Checklist.xml")
 
 
 
@@ -60,3 +60,9 @@ def build_testcase_xml(path_checklist: Path, path_xml: Path) -> None:
 
     tree = ET.ElementTree(sections)
     tree.write(str(path_xml))
+
+if __name__ == '__main__':
+    if str(sys.argv[1]).lower() == '-h':
+        print("Usage: python testcase_parser.py path_to_checklist_txt path_to_xml_outfile")
+    else:
+        build_testcase_xml(path_checklist=Path(sys.argv[1]), path_xml=Path(sys.argv[2]))
